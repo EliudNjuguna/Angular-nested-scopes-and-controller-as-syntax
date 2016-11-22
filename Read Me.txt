@@ -1,0 +1,28 @@
+In this Tutorial we will discuss, how the CONTROLLER AS syntax can make our code more readable as opposed to using $scope when working with nested scopes. 
+
+Working with nested scopes using $scope object : The following code creates 3 controllers - countryController, stateController, and cityController. All of these have set name property on the $scope object.
+
+var app = angular .module("Demo", []) .controller("countryController", function ($scope) { $scope.name = "India"; }) .controller("stateController", function ($scope) { $scope.name = "Maharashtra"; }) .controller("cityController", function ($scope) { $scope.name = "Mumbai"; });
+
+Now we want to display Country, State and City names in the view
+
+To get the output as shown above, we will have the following HTML in our view. name property retrieves the correct value as expected. However, the code is bit confusing.
+
+<div ng-controller="countryController"> {{name}} <div ng-controller="stateController"> {{name}} <div ng-controller="cityController"> {{name}} </div> </div>
+</div>
+
+Now let us say we want to display the names as along with parent names.
+
+To achieve this modify the HTML in the view as shown below. Notice we are using $parent to get the name property value of the immediate parent controller. To get the name property value of the grand parent, we are using $parent.$parent. This can get very confusing if you have many nested controllers and as a result the code gets less readable.
+
+<div ng-controller="countryController"> {{name}} <div ng-controller="stateController"> {{$parent.name}} - {{name}} <div ng-controller="cityController"> {{$parent.$parent.name}} - {{$parent.name}} - {{name}} </div> </div>
+</div>
+
+Let us see how things change when we use CONTROLLER AS syntax. First change the angular code to support CONTROLLER AS syntax. Notice we are not using $scope anymore with in our controllers, instead, we are using "this" keyowrd.
+
+var app = angular .module("Demo", []) .controller("countryController", function () { this.name = "India"; }) .controller("stateController", function () { this.name = "Maharashtra"; }) .controller("cityController", function () { this.name = "Mumbai"; });
+
+With in the view, use CONTROLLER AS syntax. With this change, we are able to use the respective controller object and retrieve name property value. Now there is no need to juggle with $parent property. No matter how deep you are in the nested hierarchy, you can very easily get any controller object name property value. The code is also much readable now.
+
+<div ng-controller="countryController as countryCtrl"> {{countryCtrl.name}} <div ng-controller="stateController as stateCtrl"> {{countryCtrl.name}} - {{stateCtrl.name}} <div ng-controller="cityController as cityCtrl"> {{countryCtrl.name}} - {{stateCtrl.name}} - {{cityCtrl.name}} </div> </div>
+</div>

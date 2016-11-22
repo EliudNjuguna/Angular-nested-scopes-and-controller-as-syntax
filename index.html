@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html ng-app="Demo">
+<head>
+	<title>Angular nested scopes and controller as syntax</title>
+	<script src="scripts/angular.min.js"></script>
+	<script src="scripts/angular-route.min.js"></script>
+	<script src="scripts/script.js"></script>
+	
+	
+	
+</head>
+<body>
+	<div ng-controller="countryController as countryCtrl">
+		{{countryCtrl.name}}
+		<div ng-controller="stateController as stateCtrl">
+			{{countryCtrl.name}} - {{stateCtrl.name}}
+			<div ng-controller="cityController as cityCtrl">
+				{{countryCtrl.name}} - {{stateCtrl.name}} - {{cityCtrl.name}}
+				
+			</div>
+				
+		</div>
+	</div>
+
+	
+
+</body>
+</html>
